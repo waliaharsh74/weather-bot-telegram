@@ -1,1 +1,1 @@
-{"root":["./src/adminpanel.ts","./src/bot.ts","./src/config.ts","./src/index.ts","./src/weather.ts"],"version":"5.7.2"}
+{"root":["./src/adminpanel.ts","./src/bot.ts","./src/config.ts","./src/index.ts","./src/weather.ts","./src/db/connection.ts","./src/model/user.ts"],"version":"5.7.2"}

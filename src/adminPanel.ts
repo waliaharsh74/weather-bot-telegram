@@ -1,26 +1,73 @@
-const subscribers: Set<number> = new Set();
+import User from "./Model/user";
 
 export const subscribeUser = async (userId: number) => {
-    subscribers.add(userId);
+    try {
+        const user = await User.updateOne({ userId }, { isSubscribed: true }, { upsert: true })
+
+        if (user) return true
+        return false
+    }
+    catch (error) {
+        console.log(error);
+        return false
+    }
+
 };
 
 export const unsubscribeUser = async (userId: number) => {
-    subscribers.delete(userId);
+    try {
+        await User.updateOne({ userId }, { isSubscribed: false }, { upsert: true })
+        return true
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
 };
 
 export const getAllUsers = async () => {
-    return Array.from(subscribers);
+    try {
+        const allUsers = await User.find()
+        if (!allUsers) return []
+        return allUsers;
+    } catch (error) {
+        console.log(error);
+    }
+
 };
 
 export const blockUser = async (userId: number) => {
-    subscribers.delete(userId);
+    try {
+        await User.updateOne({ userId }, { isBlocked: true }, { upsert: true })
+        return true
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+
 };
 
 export const deleteUser = async (userId: number) => {
-    // Perform user deletion logic (e.g., removing from database)
-    subscribers.delete(userId);
+    try {
+        const user = await User.findOneAndDelete({ userId })
+        if (user) return true
+        return false
+    } catch (error) {
+        console.log(error);
+        return false
+
+    }
+
+
 };
 export const checkUser = async (userId: number) => {
-    // Perform user deletion logic (e.g., removing from database)
-    return subscribers.has(userId);
+    try {
+        const user = await User.findOne({ userId })
+        if (!user || !user.isSubscribed) {
+            return false
+        }
+        return true
+    } catch (error) {
+        console.log(error);
+    }
+
 };
